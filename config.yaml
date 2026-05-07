@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password: your_mysql_password
+  database: indulgence_meal_plan
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password:
+  data_base: 0
+
+jwt:
+  secret: your_jwt_secret_key
+  expiration: 3600  
+  name: Authorization
+
+upload:
+  dir: ./uploads
+  max_size: 10485760  
