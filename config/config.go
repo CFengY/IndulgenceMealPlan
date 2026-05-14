@@ -12,6 +12,8 @@ type Config struct {
 	Jwt    JwtConfig    `mapstructure:"jwt"`
 	Upload UploadConfig `mapstructure:"upload"`
 	Redis  RedisConfig  `mapstructure:"redis"`
+	Log       LogConfig       `mapstructure:"log"`
+	RateLimit RateLimitConfig `mapstructure:"rate_limit"`
 }
 
 type RedisConfig struct {
@@ -28,7 +30,8 @@ type JwtConfig struct {
 }
 
 type ServerConfig struct {
-	Port int `mapstructure:"port"`
+	Port            int `mapstructure:"port"`
+	ShutdownTimeout int `mapstructure:"shutdown_timeout"`
 }
 
 type MySQLConfig struct {
@@ -60,6 +63,20 @@ func Load() (*Config, error) {
 	}
 
 	return &cfg, nil
+}
+
+type LogConfig struct {
+	Level    string `mapstructure:"level"`
+	Format   string `mapstructure:"format"`
+	Output   string `mapstructure:"output"`
+	FilePath string `mapstructure:"file_path"`
+}
+
+type RateLimitConfig struct {
+	Enabled         bool `mapstructure:"enabled"`
+	Rate            int  `mapstructure:"rate"`
+	Burst           int  `mapstructure:"burst"`
+	CleanupInterval int  `mapstructure:"cleanup_interval"`
 }
 
 func (m *MySQLConfig) DSN() string {

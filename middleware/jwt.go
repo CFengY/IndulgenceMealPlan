@@ -54,14 +54,10 @@ func VerifyJWTAdmin() gin.HandlerFunc {
 			return
 		}
 
-		// fmt.Println(token) // 调试输出
-
 		// 处理Bearer前缀
 		if len(token) > 7 && token[:7] == "Bearer " {
 			token = token[7:]
 		}
-
-		// fmt.Println(token)
 
 		if global.Redis.Get(c.Request.Context(), "logout:"+token).Val() == "true" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "无效的Token"})

@@ -9,9 +9,11 @@ import (
 )
 
 func Setup(r *gin.Engine, hMeal *handler.MealHandler, hLogin *handler.LoginHandler, uploadDir string) {
+	r.Use(middleware.RequestLogger())
 	r.Use(corspkg.New(middleware.CORS()))
 
 	api := r.Group("/api/v1")
+	api.Use(middleware.RateLimitMiddleware())
 	api.Use(middleware.VerifyJWTAdmin())
 	{
 		api.POST("/meals", hMeal.Create)

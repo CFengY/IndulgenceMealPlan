@@ -25,10 +25,10 @@ type ILoginService interface {
 }
 
 type LoginService struct {
-	repo *repository.LoginRepository
+	repo repository.ILoginRepository
 }
 
-func NewLoginService(repo *repository.LoginRepository) ILoginService {
+func NewLoginService(repo repository.ILoginRepository) ILoginService {
 	return &LoginService{repo: repo}
 }
 

@@ -7,6 +7,16 @@ import (
 	"gorm.io/gorm"
 )
 
+type IMealRepository interface {
+	Create(meal *model.Meal) error
+	GetByID(id uint) (*model.Meal, error)
+	GetMeals(userID uint) ([]model.Meal, error)
+	Update(meal *model.Meal) error
+	Delete(id uint) error
+	ListByDateRange(userid uint, startDate, endDate time.Time) ([]model.Meal, error)
+	StatisticsByDateRange(userid uint, startDate, endDate time.Time) ([]model.FoodStatistic, error)
+}
+
 type MealRepository struct {
 	db *gorm.DB
 }

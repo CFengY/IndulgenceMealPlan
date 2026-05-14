@@ -6,7 +6,6 @@ import (
 	"IndulgenceMealPlan/repository"
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -29,12 +28,12 @@ type IMealService interface {
 }
 
 type MealService struct {
-	repo      *repository.MealRepository
+	repo      repository.IMealRepository
 	uploadDir string
 	maxSize   int64
 }
 
-func NewMealService(repo *repository.MealRepository, uploadDir string, maxSize int64) IMealService {
+func NewMealService(repo repository.IMealRepository, uploadDir string, maxSize int64) IMealService {
 	return &MealService{repo: repo, uploadDir: uploadDir, maxSize: maxSize}
 }
 
@@ -90,7 +89,7 @@ func (s *MealService) Create(c *gin.Context, meal *model.Meal) error {
 	).Err()
 
 	if err != nil {
-		log.Println("缓存删除失败：", err)
+		global.Logger.Warnw("缓存删除失败", "error", err)
 	}
 
 	return s.repo.Create(meal)
@@ -212,7 +211,7 @@ func (s *MealService) Update(c *gin.Context, meal *model.Meal) error {
 	).Err()
 
 	if err != nil {
-		log.Println("缓存删除失败：", err)
+		global.Logger.Warnw("缓存删除失败", "error", err)
 	}
 
 	return s.repo.Update(meal)
@@ -259,7 +258,7 @@ func (s *MealService) Delete(c *gin.Context, userid, id uint) error {
 	).Err()
 
 	if err != nil {
-		log.Println("缓存删除失败：", err)
+		global.Logger.Warnw("缓存删除失败", "error", err)
 	}
 
 	// global.Redis.Del(ctx, "meal:"+fmt.Sprint(id))

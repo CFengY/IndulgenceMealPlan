@@ -18,7 +18,17 @@ func InitRedis() {
 	ping := client.Ping(context.Background())
 	err := ping.Err()
 	if err != nil {
-		panic(err)
+		global.Logger.Fatalw("Redis连接失败", "error", err)
 	}
 	global.Redis = client
+}
+
+func CloseRedis() {
+	if global.Redis != nil {
+		if err := global.Redis.Close(); err != nil {
+			global.Logger.Errorw("关闭Redis连接失败", "error", err)
+			return
+		}
+		global.Logger.Info("Redis连接已关闭")
+	}
 }

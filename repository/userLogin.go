@@ -6,6 +6,13 @@ import (
 	"gorm.io/gorm"
 )
 
+type ILoginRepository interface {
+	CreateUser(user *model.User) error
+	GetUserByUsername(username string) (*model.User, error)
+	UpdateUser(user *model.User) error
+	DeleteUser(id uint) error
+}
+
 type LoginRepository struct {
 	db *gorm.DB
 }
