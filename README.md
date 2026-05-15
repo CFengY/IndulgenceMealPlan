@@ -39,3 +39,9 @@
 ![alt text](./readme.image/rangeSearch.png)
 
 ![alt text](./readme.image/alldays.png)
+
+## AI助手
+
+![alt text](./readme.image/助手.png)
+
+![alt text](./readme.image/功能1.png)

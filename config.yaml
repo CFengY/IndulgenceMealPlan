@@ -35,3 +35,8 @@ rate_limit:
   rate: 100
   burst: 200
   cleanup_interval: 300
+
+ai:
+  api_key: your_api_key
+  base_url: your_OpenaiFormat_api_base_url
+  model: your_model_name

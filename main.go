@@ -49,11 +49,18 @@ func main() {
 	loginSvc := service.NewLoginService(loginRepo)
 	loginHandler := handler.NewLoginHandler(loginSvc)
 
+	// 初始化 AI 聊天服务
+	chatSvc, err := service.NewChatService(mealRepo, global.Config.AI)
+	if err != nil {
+		global.Logger.Fatalw("AI 聊天服务初始化失败", "error", err)
+	}
+	chatHandler := handler.NewChatHandler(chatSvc)
+
 	// 初始化路由
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(gin.Recovery())
-	router.Setup(r, mealHandler, loginHandler, global.Config.Upload.Dir)
+	router.Setup(r, mealHandler, loginHandler, chatHandler, global.Config.Upload.Dir)
 
 	// 创建 HTTP 服务器
 	srv := &http.Server{

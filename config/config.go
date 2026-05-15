@@ -14,6 +14,7 @@ type Config struct {
 	Redis  RedisConfig  `mapstructure:"redis"`
 	Log       LogConfig       `mapstructure:"log"`
 	RateLimit RateLimitConfig `mapstructure:"rate_limit"`
+	AI        AIConfig         `mapstructure:"ai"`
 }
 
 type RedisConfig struct {
@@ -77,6 +78,12 @@ type RateLimitConfig struct {
 	Rate            int  `mapstructure:"rate"`
 	Burst           int  `mapstructure:"burst"`
 	CleanupInterval int  `mapstructure:"cleanup_interval"`
+}
+
+type AIConfig struct {
+	APIKey  string `mapstructure:"api_key"`
+	BaseURL string `mapstructure:"base_url"`
+	Model   string `mapstructure:"model"`
 }
 
 func (m *MySQLConfig) DSN() string {
