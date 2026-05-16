@@ -37,6 +37,6 @@ rate_limit:
   cleanup_interval: 300
 
 ai:
-  api_key: your_api_key
-  base_url: your_OpenaiFormat_api_base_url
-  model: your_model_name
+  api_key: your_ai_api_key
+  base_url: your_ai_base_url_openaiVersion
+  model: your_ai_model_name

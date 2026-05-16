@@ -6,7 +6,9 @@ import (
 	"IndulgenceMealPlan/model"
 	"IndulgenceMealPlan/repository"
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"sort"
 	"strings"
 	"time"
@@ -64,7 +66,7 @@ func NewChatService(mealRepo repository.IMealRepository, cfg config.AIConfig) (*
 	}, nil
 }
 
-func (s *ChatService) Chat(ctx context.Context, userID uint, question string) (string, error) {
+func (s *ChatService) Chat(ctx context.Context, userID uint, question string) (<-chan string, error) {
 	// 获取用户近 30 天饮食记录
 	endDate := time.Now()
 	startDate := endDate.AddDate(0, 0, -30)
@@ -85,22 +87,46 @@ func (s *ChatService) Chat(ctx context.Context, userID uint, question string) (s
 		"question":     question,
 	})
 	if err != nil {
-		return "", fmt.Errorf("提示词渲染失败: %w", err)
+		return nil, fmt.Errorf("提示词渲染失败: %w", err)
 	}
 
 	// fmt.Println(s.template)
 	// fmt.Println(messages)
 
 	// 调用 LLM
-	result, err := s.chatModel.Generate(ctx, messages)
+	// result, err := s.chatModel.Generate(ctx, messages)
+	results, err := s.chatModel.Stream(ctx, messages)
 
 	// fmt.Println(result)
 
 	if err != nil {
-		return "", fmt.Errorf("AI 调用失败: %w", err)
+		return nil, fmt.Errorf("AI 调用失败: %w", err)
 	}
+	// defer results.Close()
 
-	return result.Content, nil
+	ch := make(chan string)
+
+	go func() {
+		defer close(ch)
+		defer results.Close()
+
+		for {
+			result, err := results.Recv()
+			if errors.Is(err, io.EOF) {
+				break
+			}
+			if err != nil {
+				global.Logger.Errorw("接收 AI 响应失败", "error", err)
+				break
+			}
+
+			ch <- result.Content
+
+		}
+
+	}()
+
+	return ch, nil
 }
 
 func formatDietContext(meals []model.Meal) string {

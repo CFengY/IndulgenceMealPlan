@@ -39,24 +39,59 @@ const ChatBot: React.FC = () => {
     setInput('')
     setIsLoading(true)
 
-    try {
-      const response = await chatService.sendMessage(trimmed)
-      const assistantMsg: Message = {
-        role: 'assistant',
-        content: response.reply,
-        timestamp: new Date(),
+    await chatService.sendMessageStream(
+      trimmed,
+      // onChunk
+      (chunk: string) => {
+        setMessages((prev) => {
+          const last = prev[prev.length - 1]
+          if (last && last.role === 'assistant') {
+            return [
+              ...prev.slice(0, -1),
+              { ...last, content: last.content + chunk },
+            ]
+          }
+          // 首个 chunk，创建 assistant 消息
+          return [
+            ...prev,
+            {
+              role: 'assistant',
+              content: chunk,
+              timestamp: new Date(),
+            },
+          ]
+        })
+      },
+      // onDone
+      () => {
+        setIsLoading(false)
+      },
+      // onError
+      (error: string) => {
+        setMessages((prev) => {
+          const last = prev[prev.length - 1]
+          if (last && last.role === 'assistant' && last.content === '') {
+            return [
+              ...prev.slice(0, -1),
+              {
+                role: 'assistant',
+                content: error,
+                timestamp: new Date(),
+              },
+            ]
+          }
+          return [
+            ...prev,
+            {
+              role: 'assistant',
+              content: error,
+              timestamp: new Date(),
+            },
+          ]
+        })
+        setIsLoading(false)
       }
-      setMessages((prev) => [...prev, assistantMsg])
-    } catch {
-      const errorMsg: Message = {
-        role: 'assistant',
-        content: '抱歉，AI 服务暂时不可用，请稍后再试。',
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, errorMsg])
-    } finally {
-      setIsLoading(false)
-    }
+    )
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -202,8 +237,8 @@ const ChatBot: React.FC = () => {
               </div>
             ))}
 
-            {/* 加载动画 */}
-            {isLoading && (
+            {/* 加载动画（仅在等待首字返回时显示） */}
+            {isLoading && !(messages.length > 0 && messages[messages.length - 1].role === 'assistant') && (
               <div className="flex justify-start">
                 <div className="flex items-start space-x-2">
                   <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
