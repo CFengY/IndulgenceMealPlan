@@ -110,35 +110,35 @@ const Calendar: React.FC = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">日历视图</h1>
-        <p className="text-gray-600">按日期查看你的用餐记录</p>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">日历视图</h1>
+        <p className="text-gray-600 dark:text-gray-400">按日期查看你的用餐记录</p>
       </div>
 
       {/* 日历控件 */}
-      <div className="bg-white border rounded-xl p-6 mb-8">
+      <div className="bg-white dark:bg-gray-800 border rounded-xl p-6 mb-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
             <CalendarIcon className="h-6 w-6 mr-2 text-blue-500" />
-            <h2 className="text-xl font-bold text-gray-800">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
               {year}年 {monthNames[month]}
             </h2>
           </div>
           <div className="flex space-x-2">
             <button
               onClick={prevMonth}
-              className="p-2 rounded-lg hover:bg-gray-100 transition"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:bg-gray-700 transition"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={() => setCurrentDate(new Date())}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+              className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition"
             >
               今天
             </button>
             <button
               onClick={nextMonth}
-              className="p-2 rounded-lg hover:bg-gray-100 transition"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:bg-gray-700 transition"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -149,7 +149,7 @@ const Calendar: React.FC = () => {
         <div className="grid grid-cols-7 gap-2">
           {/* 星期标题 */}
           {dayNames.map(day => (
-            <div key={day} className="text-center font-medium text-gray-500 py-2">
+            <div key={day} className="text-center font-medium text-gray-500 dark:text-gray-400 py-2">
               {day}
             </div>
           ))}
@@ -173,7 +173,7 @@ const Calendar: React.FC = () => {
                 }`}
               >
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`font-medium ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
+                  <span className={`font-medium ${isToday ? 'text-blue-600' : 'text-gray-700 dark:text-gray-200'}`}>
                     {day}
                   </span>
                   {dayMeals.length > 0 && (
@@ -198,7 +198,7 @@ const Calendar: React.FC = () => {
                     </div>
                   ))}
                   {dayMeals.length > 3 && (
-                    <div className="text-xs text-gray-500 text-center">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
                       +{dayMeals.length - 3} 更多
                     </div>
                   )}
@@ -210,22 +210,22 @@ const Calendar: React.FC = () => {
       </div>
 
       {/* 当月统计 */}
-      <div className="bg-white border rounded-xl p-6">
-        <h3 className="text-lg font-medium text-gray-800 mb-4">本月统计</h3>
+      <div className="bg-white dark:bg-gray-800 border rounded-xl p-6">
+        <h3 className="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">本月统计</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-600">总记录数</p>
-            <p className="text-2xl font-bold text-gray-800">{meals.length}</p>
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400">总记录数</p>
+            <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">{meals.length}</p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-600">早餐次数</p>
-            <p className="text-2xl font-bold text-gray-800">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400">早餐次数</p>
+            <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
               {meals.filter(m => m.meal_type === '早餐').length}
             </p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-600">最常吃</p>
-            <p className="text-2xl font-bold text-gray-800">
+          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400">最常吃</p>
+            <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
               {(() => {
                 const foodCounts: Record<string, number> = {}
                 meals.forEach(meal => {

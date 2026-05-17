@@ -29,13 +29,13 @@ const Login: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           <div className="flex flex-col items-center mb-8">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-4">
               <Utensils className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-800">放纵餐计划</h1>
-            <p className="text-gray-500 mt-2">记录你的每一餐，享受美食生活</p>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">放纵餐计划</h1>
+            <p className="text-gray-500 dark:text-gray-400 mt-2">记录你的每一餐，享受美食生活</p>
           </div>
 
           {error && (
@@ -46,7 +46,7 @@ const Login: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 用户名
               </label>
               <input
@@ -61,7 +61,7 @@ const Login: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 密码
               </label>
               <input
@@ -85,7 +85,7 @@ const Login: React.FC = () => {
           </form>
 
           <div className="mt-8 text-center">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               还没有账号？{' '}
               <Link to="/register" className="text-blue-600 hover:text-blue-800 font-medium">
                 立即注册

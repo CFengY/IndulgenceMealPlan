@@ -15,6 +15,7 @@ type IMealRepository interface {
 	Delete(id uint) error
 	ListByDateRange(userid uint, startDate, endDate time.Time) ([]model.Meal, error)
 	StatisticsByDateRange(userid uint, startDate, endDate time.Time) ([]model.FoodStatistic, error)
+	NutritionByDateRange(userid uint, startDate, endDate time.Time) (*model.NutritionSummary, error)
 }
 
 type MealRepository struct {
@@ -75,4 +76,14 @@ func (r *MealRepository) StatisticsByDateRange(userid uint, startDate, endDate t
 		Order("count DESC").
 		Find(&stats).Error
 	return stats, err
+}
+
+// NutritionByDateRange 获取指定日期范围内的营养汇总
+func (r *MealRepository) NutritionByDateRange(userid uint, startDate, endDate time.Time) (*model.NutritionSummary, error) {
+	var summary model.NutritionSummary
+	err := r.db.Model(&model.Meal{}).
+		Select("COALESCE(SUM(calories), 0) as calories, COALESCE(SUM(protein_g), 0) as protein_g, COALESCE(SUM(fat_g), 0) as fat_g, COALESCE(SUM(carbs_g), 0) as carbs_g").
+		Where("user_id = ? AND meal_date BETWEEN ? AND ?", userid, startDate.Format("2006-01-02"), endDate.Format("2006-01-02")).
+		Scan(&summary).Error
+	return &summary, err
 }

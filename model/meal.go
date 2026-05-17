@@ -39,6 +39,10 @@ type Meal struct {
 	MealType  string    `gorm:"type:varchar(10);not null" json:"meal_type"`
 	MealDate  time.Time `gorm:"type:date;not null" json:"meal_date"`
 	ImagePath string    `gorm:"type:varchar(255)" json:"image_path,omitempty"`
+	Calories  float64   `gorm:"type:decimal(8,1);default:0" json:"calories"`
+	ProteinG  float64   `gorm:"type:decimal(6,1);default:0" json:"protein_g"`
+	FatG      float64   `gorm:"type:decimal(6,1);default:0" json:"fat_g"`
+	CarbsG    float64   `gorm:"type:decimal(6,1);default:0" json:"carbs_g"`
 	// CreatedAt time.Time  `gorm:"autoCreateTime" json:"created_at,omitempty"`
 	// UpdatedAt time.Time  `gorm:"autoUpdateTime" json:"updated_at,omitempty"`
 	// DeletedAt *time.Time `gorm:"index" json:"deleted_at,omitempty"`
@@ -51,4 +55,11 @@ func (*Meal) TableName() string {
 type FoodStatistic struct {
 	FoodName string `json:"food_name"`
 	Count    int64  `json:"count"`
+}
+
+type NutritionSummary struct {
+	Calories float64 `json:"calories"`
+	ProteinG float64 `json:"protein_g"`
+	FatG     float64 `json:"fat_g"`
+	CarbsG   float64 `json:"carbs_g"`
 }

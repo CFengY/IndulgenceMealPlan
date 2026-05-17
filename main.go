@@ -56,11 +56,16 @@ func main() {
 	}
 	chatHandler := handler.NewChatHandler(chatSvc)
 
+	// 初始化动态分享服务
+	postRepo := repository.NewPostRepository(global.DB)
+	postSvc := service.NewPostService(postRepo, global.Config.Upload.Dir, global.Config.Upload.MaxSize)
+	postHandler := handler.NewPostHandler(postSvc)
+
 	// 初始化路由
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(gin.Recovery())
-	router.Setup(r, mealHandler, loginHandler, chatHandler, global.Config.Upload.Dir)
+	router.Setup(r, mealHandler, loginHandler, chatHandler, postHandler, global.Config.Upload.Dir)
 
 	// 创建 HTTP 服务器
 	srv := &http.Server{

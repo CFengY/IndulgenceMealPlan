@@ -18,7 +18,7 @@ func InitMySQL() {
 	}
 
 	// 自动迁移模型
-	if err := db.AutoMigrate(&model.User{}, &model.Meal{}); err != nil {
+	if err := db.AutoMigrate(&model.User{}, &model.Meal{}, &model.Post{}); err != nil {
 		global.Logger.Fatalw("自动迁移失败", "error", err)
 	}
 

@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Setup(r *gin.Engine, hMeal *handler.MealHandler, hLogin *handler.LoginHandler, hChat *handler.ChatHandler, uploadDir string) {
+func Setup(r *gin.Engine, hMeal *handler.MealHandler, hLogin *handler.LoginHandler, hChat *handler.ChatHandler, hPost *handler.PostHandler, uploadDir string) {
 	r.Use(middleware.RequestLogger())
 	r.Use(corspkg.New(middleware.CORS()))
 
@@ -18,12 +18,17 @@ func Setup(r *gin.Engine, hMeal *handler.MealHandler, hLogin *handler.LoginHandl
 	{
 		api.POST("/meals", hMeal.Create)
 		api.GET("/meals/range", hMeal.ListByDateRange)
+			api.GET("/meals/export", hMeal.ExportCSV)
 		api.GET("/meals", hMeal.GetMeals)
 		api.PUT("/meals/:id", hMeal.Update)
 		api.DELETE("/meals/:id", hMeal.Delete)
 
 		api.POST("/logout", hLogin.Logout)
 		api.POST("/chat", hChat.Chat)
+
+		api.POST("/posts", hPost.Create)
+		api.GET("/posts", hPost.GetTimeline)
+		api.DELETE("/posts/:id", hPost.Delete)
 	}
 
 	authApi := r.Group("/api/v1/auth")

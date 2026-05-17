@@ -57,3 +57,11 @@ func (m *MockMealRepository) StatisticsByDateRange(userid uint, startDate, endDa
 	}
 	return args.Get(0).([]model.FoodStatistic), args.Error(1)
 }
+
+func (m *MockMealRepository) NutritionByDateRange(userid uint, startDate, endDate time.Time) (*model.NutritionSummary, error) {
+	args := m.Called(userid, startDate, endDate)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*model.NutritionSummary), args.Error(1)
+}

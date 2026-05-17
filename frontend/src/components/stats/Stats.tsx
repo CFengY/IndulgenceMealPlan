@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { mealService } from '../../services/meal'
 import type { DateRangeResult } from '../../services/meal'
-import { BarChart3, Calendar as CalendarIcon, TrendingUp, PieChart } from 'lucide-react'
+import { BarChart3, Calendar as CalendarIcon, TrendingUp, PieChart, Download, Flame, Beef, Droplets, Wheat } from 'lucide-react'
 
 const Stats: React.FC = () => {
   const [startDate, setStartDate] = useState('')
@@ -63,32 +63,32 @@ const Stats: React.FC = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">统计分析</h1>
-        <p className="text-gray-600">查看指定日期范围内的用餐统计</p>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">统计分析</h1>
+        <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400">查看指定日期范围内的用餐统计</p>
       </div>
 
       {/* 日期选择器 */}
-      <div className="bg-white border rounded-xl p-6 mb-8">
+      <div className="bg-white dark:bg-gray-800 border rounded-xl p-6 mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">开始日期</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">开始日期</label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">结束日期</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">结束日期</label>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
-          <div className="flex items-end">
+          <div className="flex items-end space-x-2">
             <button
               onClick={fetchStats}
               disabled={loading}
@@ -96,6 +96,15 @@ const Stats: React.FC = () => {
             >
               {loading ? '查询中...' : '更新查询'}
             </button>
+            {result && result.records.length > 0 && (
+              <button
+                onClick={() => mealService.exportCSV(startDate, endDate)}
+                className="flex items-center space-x-2 px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition"
+              >
+                <Download size={18} />
+                <span>导出 CSV</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -124,57 +133,103 @@ const Stats: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white border rounded-xl p-6">
+            <div className="bg-white dark:bg-gray-800 border rounded-xl p-6">
               <div className="flex items-center">
                 <CalendarIcon className="h-8 w-8 mr-3 text-blue-500" />
                 <div>
-                  <p className="text-sm text-gray-600">早餐次数</p>
-                  <p className="text-3xl font-bold text-gray-800">{mealTypeCounts.早餐}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">早餐次数</p>
+                  <p className="text-3xl font-bold text-gray-800 dark:text-gray-100">{mealTypeCounts.早餐}</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white border rounded-xl p-6">
+            <div className="bg-white dark:bg-gray-800 border rounded-xl p-6">
               <div className="flex items-center">
                 <CalendarIcon className="h-8 w-8 mr-3 text-green-500" />
                 <div>
-                  <p className="text-sm text-gray-600">午餐次数</p>
-                  <p className="text-3xl font-bold text-gray-800">{mealTypeCounts.午餐}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">午餐次数</p>
+                  <p className="text-3xl font-bold text-gray-800 dark:text-gray-100">{mealTypeCounts.午餐}</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white border rounded-xl p-6">
+            <div className="bg-white dark:bg-gray-800 border rounded-xl p-6">
               <div className="flex items-center">
                 <CalendarIcon className="h-8 w-8 mr-3 text-purple-500" />
                 <div>
-                  <p className="text-sm text-gray-600">晚餐次数</p>
-                  <p className="text-3xl font-bold text-gray-800">{mealTypeCounts.晚餐}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">晚餐次数</p>
+                  <p className="text-3xl font-bold text-gray-800 dark:text-gray-100">{mealTypeCounts.晚餐}</p>
                 </div>
               </div>
             </div>
           </div>
 
+          {/* 营养汇总卡片 */}
+          {result.nutrition_summary && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="bg-white dark:bg-gray-800 border rounded-xl p-4">
+                <div className="flex items-center mb-2">
+                  <Flame className="h-5 w-5 text-orange-500 mr-2" />
+                  <span className="text-sm text-gray-600 dark:text-gray-400">总热量</span>
+                </div>
+                <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                  {Math.round(result.nutrition_summary.calories)}
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-1">kcal</span>
+                </p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 border rounded-xl p-4">
+                <div className="flex items-center mb-2">
+                  <Beef className="h-5 w-5 text-red-500 mr-2" />
+                  <span className="text-sm text-gray-600 dark:text-gray-400">总蛋白质</span>
+                </div>
+                <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                  {Math.round(result.nutrition_summary.protein_g)}
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-1">g</span>
+                </p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 border rounded-xl p-4">
+                <div className="flex items-center mb-2">
+                  <Droplets className="h-5 w-5 text-yellow-500 mr-2" />
+                  <span className="text-sm text-gray-600 dark:text-gray-400">总脂肪</span>
+                </div>
+                <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                  {Math.round(result.nutrition_summary.fat_g)}
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-1">g</span>
+                </p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 border rounded-xl p-4">
+                <div className="flex items-center mb-2">
+                  <Wheat className="h-5 w-5 text-amber-600 mr-2" />
+                  <span className="text-sm text-gray-600 dark:text-gray-400">总碳水</span>
+                </div>
+                <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                  {Math.round(result.nutrition_summary.carbs_g)}
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-1">g</span>
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* 热门食物排行 */}
-            <div className="bg-white border rounded-xl p-6">
+            <div className="bg-white dark:bg-gray-800 border rounded-xl p-6">
               <div className="flex items-center mb-6">
                 <TrendingUp className="h-6 w-6 mr-2 text-blue-500" />
-                <h2 className="text-xl font-bold text-gray-800">热门食物排行</h2>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">热门食物排行</h2>
               </div>
               <div className="space-y-4">
                 {topFoods.map((food, index) => (
                   <div key={food.food_name} className="flex items-center">
                     <div className={`w-8 h-8 flex items-center justify-center rounded-lg mr-3 ${
                       index === 0 ? 'bg-yellow-100 text-yellow-800' :
-                      index === 1 ? 'bg-gray-100 text-gray-800' :
+                      index === 1 ? 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100' :
                       index === 2 ? 'bg-orange-100 text-orange-800' :
-                      'bg-gray-100 text-gray-600'
+                      'bg-gray-100 dark:bg-gray-700 text-gray-600'
                     }`}>
                       <span className="font-bold">{index + 1}</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-800">{food.food_name}</h4>
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">{food.food_name}</h4>
                       <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                         <div
                           className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
@@ -183,8 +238,8 @@ const Stats: React.FC = () => {
                       </div>
                     </div>
                     <div className="ml-4 text-right">
-                      <p className="text-2xl font-bold text-gray-800">{food.count}</p>
-                      <p className="text-sm text-gray-500">次</p>
+                      <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">{food.count}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">次</p>
                     </div>
                   </div>
                 ))}
@@ -192,10 +247,10 @@ const Stats: React.FC = () => {
             </div>
 
             {/* 餐类分布 */}
-            <div className="bg-white border rounded-xl p-6">
+            <div className="bg-white dark:bg-gray-800 border rounded-xl p-6">
               <div className="flex items-center mb-6">
                 <PieChart className="h-6 w-6 mr-2 text-green-500" />
-                <h2 className="text-xl font-bold text-gray-800">餐类分布</h2>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">餐类分布</h2>
               </div>
               <div className="space-y-4">
                 {Object.entries(mealTypeCounts).map(([type, count]) => (
@@ -214,7 +269,7 @@ const Stats: React.FC = () => {
                       </span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-800">{type}</h4>
+                      <h4 className="font-medium text-gray-800 dark:text-gray-100">{type}</h4>
                       <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                         <div
                           className={`h-2 rounded-full ${
@@ -227,8 +282,8 @@ const Stats: React.FC = () => {
                       </div>
                     </div>
                     <div className="ml-4 text-right">
-                      <p className="text-2xl font-bold text-gray-800">{count}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">{count}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
                         {totalMeals > 0 ? `${Math.round((count / totalMeals) * 100)}%` : '0%'}
                       </p>
                     </div>
@@ -241,23 +296,23 @@ const Stats: React.FC = () => {
           {/* 记录列表 */}
           {result.records.length > 0 && (
             <div className="mt-8">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">详细记录</h2>
-              <div className="bg-white border rounded-xl overflow-hidden">
+              <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">详细记录</h2>
+              <div className="bg-white dark:bg-gray-800 border rounded-xl overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-gray-50 dark:bg-gray-900">
                       <tr>
-                        <th className="py-3 px-6 text-left text-sm font-medium text-gray-700">日期</th>
-                        <th className="py-3 px-6 text-left text-sm font-medium text-gray-700">食物名称</th>
-                        <th className="py-3 px-6 text-left text-sm font-medium text-gray-700">餐类</th>
-                        <th className="py-3 px-6 text-left text-sm font-medium text-gray-700">图片</th>
+                        <th className="py-3 px-6 text-left text-sm font-medium text-gray-700 dark:text-gray-200">日期</th>
+                        <th className="py-3 px-6 text-left text-sm font-medium text-gray-700 dark:text-gray-200">食物名称</th>
+                        <th className="py-3 px-6 text-left text-sm font-medium text-gray-700 dark:text-gray-200">餐类</th>
+                        <th className="py-3 px-6 text-left text-sm font-medium text-gray-700 dark:text-gray-200">图片</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {result.records.map((record) => (
-                        <tr key={record.id} className="hover:bg-gray-50">
-                          <td className="py-4 px-6 text-gray-800">{record.meal_date}</td>
-                          <td className="py-4 px-6 font-medium text-gray-800">{record.food_name}</td>
+                        <tr key={record.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                          <td className="py-4 px-6 text-gray-800 dark:text-gray-100">{record.meal_date}</td>
+                          <td className="py-4 px-6 font-medium text-gray-800 dark:text-gray-100">{record.food_name}</td>
                           <td className="py-4 px-6">
                             <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                               record.meal_type === '早餐' ? 'bg-yellow-100 text-yellow-800' :

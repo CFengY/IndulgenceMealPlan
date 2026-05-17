@@ -11,6 +11,7 @@ import MealList from './components/meals/MealList'
 import MealForm from './components/meals/MealForm'
 import Stats from './components/stats/Stats'
 import Calendar from './components/stats/Calendar'
+import Timeline from './components/posts/Timeline'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="meals/edit/:id" element={<MealForm />} />
             <Route path="stats" element={<Stats />} />
             <Route path="calendar" element={<Calendar />} />
+            <Route path="posts" element={<Timeline />} />
           </Route>
 
           {/* 默认重定向 */}

@@ -131,7 +131,7 @@ const ChatBot: React.FC = () => {
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-105 ${
           isOpen
-            ? 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+            ? 'bg-gray-200 text-gray-600 dark:text-gray-400 hover:bg-gray-300'
             : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
         }`}
         title={isOpen ? '关闭助手' : '饮食小助手'}
@@ -141,7 +141,7 @@ const ChatBot: React.FC = () => {
 
       {/* 聊天面板 */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-full max-w-md bg-white rounded-2xl shadow-2xl border flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300"
+        <div className="fixed bottom-24 right-6 z-50 w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-300"
           style={{ height: '560px', maxHeight: 'calc(100vh - 140px)' }}
         >
           {/* 头部 */}
@@ -164,30 +164,30 @@ const ChatBot: React.FC = () => {
           </div>
 
           {/* 消息列表 */}
-          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-gray-50">
+          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-gray-50 dark:bg-gray-900">
             {messages.length === 0 && (
-              <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-3">
+              <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-400 space-y-3">
                 <Bot size={48} strokeWidth={1.5} />
                 <div className="text-center">
-                  <p className="font-medium text-gray-500">你好！我是饮食小助手 👋</p>
+                  <p className="font-medium text-gray-500 dark:text-gray-400">你好！我是饮食小助手 👋</p>
                   <p className="text-sm mt-1">可以根据你的饮食记录提供个性化建议</p>
-                  <div className="mt-4 space-y-2 text-xs text-gray-400">
+                  <div className="mt-4 space-y-2 text-xs text-gray-400 dark:text-gray-400">
                     <p>试试问我：</p>
                     <button
                       onClick={() => setInput('帮我分析一下我最近的饮食结构')}
-                      className="block w-full text-left px-3 py-1.5 bg-white rounded-lg border hover:border-blue-300 hover:text-blue-500 transition"
+                      className="block w-full text-left px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg border hover:border-blue-300 hover:text-blue-500 transition"
                     >
                       "帮我分析一下我最近的饮食结构"
                     </button>
                     <button
                       onClick={() => setInput('我最近在减脂，推荐一下今天晚餐吃什么')}
-                      className="block w-full text-left px-3 py-1.5 bg-white rounded-lg border hover:border-blue-300 hover:text-blue-500 transition"
+                      className="block w-full text-left px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg border hover:border-blue-300 hover:text-blue-500 transition"
                     >
                       "我最近在减脂，推荐一下今天晚餐吃什么"
                     </button>
                     <button
                       onClick={() => setInput('鸡胸肉的热量大概是多少？')}
-                      className="block w-full text-left px-3 py-1.5 bg-white rounded-lg border hover:border-blue-300 hover:text-blue-500 transition"
+                      className="block w-full text-left px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg border hover:border-blue-300 hover:text-blue-500 transition"
                     >
                       "鸡胸肉的热量大概是多少？"
                     </button>
@@ -219,10 +219,10 @@ const ChatBot: React.FC = () => {
                     className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                       msg.role === 'user'
                         ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-tr-md'
-                        : 'bg-white border text-gray-700 rounded-tl-md shadow-sm'
+                        : 'bg-white dark:bg-gray-800 border text-gray-700 dark:text-gray-200 rounded-tl-md shadow-sm'
                     }`}
                   >
-                    <div className={msg.role === 'user' ? 'text-white' : 'text-gray-700'}>
+                    <div className={msg.role === 'user' ? 'text-white' : 'text-gray-700 dark:text-gray-200'}>
                       {renderContent(msg.content)}
                     </div>
                     <span
@@ -244,7 +244,7 @@ const ChatBot: React.FC = () => {
                   <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
                     <Bot size={14} className="text-white" />
                   </div>
-                  <div className="px-4 py-3 bg-white border rounded-2xl rounded-tl-md shadow-sm">
+                  <div className="px-4 py-3 bg-white dark:bg-gray-800 border rounded-2xl rounded-tl-md shadow-sm">
                     <div className="flex space-x-1.5">
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -259,7 +259,7 @@ const ChatBot: React.FC = () => {
           </div>
 
           {/* 输入区域 */}
-          <div className="px-4 py-3 bg-white border-t">
+          <div className="px-4 py-3 bg-white dark:bg-gray-800 border-t">
             <div className="flex items-end space-x-2">
               <textarea
                 ref={inputRef}
@@ -268,7 +268,7 @@ const ChatBot: React.FC = () => {
                 onKeyDown={handleKeyDown}
                 placeholder="输入你的问题..."
                 rows={1}
-                className="flex-1 resize-none rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent max-h-32"
+                className="flex-1 resize-none rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent max-h-32"
                 style={{ minHeight: '40px' }}
                 disabled={isLoading}
                 onInput={(e) => {
@@ -289,7 +289,7 @@ const ChatBot: React.FC = () => {
                 )}
               </button>
             </div>
-            <p className="text-xs text-gray-400 mt-1.5 text-center">
+            <p className="text-xs text-gray-400 dark:text-gray-400 mt-1.5 text-center">
               按 Enter 发送，Shift+Enter 换行
             </p>
           </div>

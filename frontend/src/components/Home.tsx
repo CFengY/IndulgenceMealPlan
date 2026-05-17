@@ -91,8 +91,8 @@ const Home: React.FC = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">欢迎回来！</h1>
-        <p className="text-gray-600">记录你的放纵餐，享受美食生活</p>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">欢迎回来！</h1>
+        <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400">记录你的放纵餐，享受美食生活</p>
       </div>
 
       {/* 快速操作卡片 */}
@@ -112,39 +112,39 @@ const Home: React.FC = () => {
 
         <Link
           to="/meals"
-          className="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition"
+          className="bg-white dark:bg-gray-800 border rounded-xl p-6 shadow-sm hover:shadow-md transition"
         >
           <div className="flex items-center">
-            <Utensils className="h-8 w);-8 mr-3 text-blue-500" />
+            <Utensils className="h-8 w-8 mr-3 text-blue-500" />
             <div>
-              <h3 className="text-xl font-bold text-gray-800">查看记录</h3>
-              <p className="text-gray-600">查看所有用餐记录</p>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">查看记录</h3>
+              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400">查看所有用餐记录</p>
             </div>
           </div>
         </Link>
 
         <Link
           to="/stats"
-          className="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition"
+          className="bg-white dark:bg-gray-800 border rounded-xl p-6 shadow-sm hover:shadow-md transition"
         >
           <div className="flex items-center">
             <BarChart3 className="h-8 w-8 mr-3 text-green-500" />
             <div>
-              <h3 className="text-xl font-bold text-gray-800">统计分析</h3>
-              <p className="text-gray-600">查看食物频次统计</p>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">统计分析</h3>
+              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400">查看食物频次统计</p>
             </div>
           </div>
         </Link>
 
         <Link
           to="/calendar"
-          className="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition"
+          className="bg-white dark:bg-gray-800 border rounded-xl p-6 shadow-sm hover:shadow-md transition"
         >
           <div className="flex items-center">
             <Calendar className="h-8 w-8 mr-3 text-orange-500" />
             <div>
-              <h3 className="text-xl font-bold text-gray-800">日历视图</h3>
-              <p className="text-gray-600">按日期查看记录</p>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">日历视图</h3>
+              <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400">按日期查看记录</p>
             </div>
           </div>
         </Link>
@@ -152,28 +152,28 @@ const Home: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* 最近记录 */}
-        <div className="bg-white border rounded-xl p-6">
+        <div className="bg-white dark:bg-gray-800 border rounded-xl p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800">最近记录</h2>
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">最近记录</h2>
             <Link to="/meals" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
               查看全部 →
             </Link>
           </div>
           <div className="space-y-4">
             {recentMeals.length === 0 ? (
-              <div className="text-center py-6 text-gray-500">
+              <div className="text-center py-6 text-gray-500 dark:text-gray-400">
                 今天还没有记录，开始记录你的第一餐吧！
               </div>
             ) : (
               recentMeals.map((meal) => (
-              <div key={meal.ID} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div key={meal.ID} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
                 <div className="flex items-center">
                   {meal.meal_type === '早餐' && <Coffee className="h-5 w-5 mr-3 text-yellow-500" />}
                   {meal.meal_type === '午餐' && <Utensils className="h-5 w-5 mr-3 text-blue-500" />}
                   {meal.meal_type === '晚餐' && <Pizza className="h-5 w-5 mr-3 text-purple-500" />}
                   <div>
-                    <h4 className="font-medium text-gray-800">{meal.food_name}</h4>
-                    <p className="text-sm text-gray-500">{formatDate(meal.meal_date)} · {meal.meal_type}</p>
+                    <h4 className="font-medium text-gray-800 dark:text-gray-100">{meal.food_name}</h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{formatDate(meal.meal_date)} · {meal.meal_type}</p>
                   </div>
                 </div>
                 <span className="px-3 py-1 bg-blue-100 text-blue-600 text-sm font-medium rounded-full">
@@ -185,21 +185,21 @@ const Home: React.FC = () => {
         </div>
 
         {/* 热门食物 */}
-        <div className="bg-white border rounded-xl p-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-6">近一周热门食物</h2>
+        <div className="bg-white dark:bg-gray-800 border rounded-xl p-6">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6">近一周热门食物</h2>
           <div className="space-y-4">
             {stats.length === 0 ? (
-              <div className="text-center py-6 text-gray-500">
+              <div className="text-center py-6 text-gray-500 dark:text-gray-400">
                 近一周暂无统计数据
               </div>
             ) : (
               stats.map((stat, index) => (
                 <div key={stat.food_name} className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg mr-3">
-                      <span className="font-bold text-gray-700">{index + 1}</span>
+                    <div className="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-lg mr-3">
+                      <span className="font-bold text-gray-700 dark:text-gray-200">{index + 1}</span>
                     </div>
-                    <span className="font-medium text-gray-800">{stat.food_name}</span>
+                    <span className="font-medium text-gray-800 dark:text-gray-100">{stat.food_name}</span>
                   </div>
                   <div className="flex items-center">
                     <div className="w-32 bg-gray-200 rounded-full h-2 mr-3">
@@ -208,7 +208,7 @@ const Home: React.FC = () => {
                         style={{ width: `${(stat.count / (stats[0]?.count || 1)) * 100}%` }}
                       ></div>
                     </div>
-                    <span className="text-gray-600 font-medium">{stat.count} 次</span>
+                    <span className="text-gray-600 dark:text-gray-400 dark:text-gray-400 font-medium">{stat.count} 次</span>
                   </div>
                 </div>
               ))

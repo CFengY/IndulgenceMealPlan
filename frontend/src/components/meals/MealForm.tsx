@@ -14,6 +14,10 @@ const MealForm: React.FC = () => {
   const [mealDate, setMealDate] = useState('')
   const [image, setImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string>('')
+  const [calories, setCalories] = useState('')
+  const [proteinG, setProteinG] = useState('')
+  const [fatG, setFatG] = useState('')
+  const [carbsG, setCarbsG] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [existingImage, setExistingImage] = useState<string>('')
@@ -38,9 +42,11 @@ const MealForm: React.FC = () => {
         setFoodName(meal.food_name)
         setMealType(meal.meal_type === '早餐' ? '1' : meal.meal_type === '午餐' ? '2' : '3')
         setMealDate(meal.meal_date)
-        if (meal.image_path) {
-          setExistingImage(mealService.getImageUrl(meal.image_path))
-        }
+        if (meal.image_path) setExistingImage(mealService.getImageUrl(meal.image_path))
+        if (meal.calories) setCalories(meal.calories.toString())
+        if (meal.protein_g) setProteinG(meal.protein_g.toString())
+        if (meal.fat_g) setFatG(meal.fat_g.toString())
+        if (meal.carbs_g) setCarbsG(meal.carbs_g.toString())
       }
     } catch (err) {
       setError('加载记录失败')
@@ -70,20 +76,24 @@ const MealForm: React.FC = () => {
           food_name: foodName,
           meal_type: parseInt(mealType),
           meal_date: mealDate,
+          calories: calories ? parseFloat(calories) : undefined,
+          protein_g: proteinG ? parseFloat(proteinG) : undefined,
+          fat_g: fatG ? parseFloat(fatG) : undefined,
+          carbs_g: carbsG ? parseFloat(carbsG) : undefined,
         }
-        if (image) {
-          updateData.image = image
-        }
+        if (image) updateData.image = image
         await mealService.updateMeal(parseInt(id!), updateData)
       } else {
         const createData: CreateMealRequest = {
           food_name: foodName,
           meal_type: parseInt(mealType),
           meal_date: mealDate,
+          calories: calories ? parseFloat(calories) : undefined,
+          protein_g: proteinG ? parseFloat(proteinG) : undefined,
+          fat_g: fatG ? parseFloat(fatG) : undefined,
+          carbs_g: carbsG ? parseFloat(carbsG) : undefined,
         }
-        if (image) {
-          createData.image = image
-        }
+        if (image) createData.image = image
         await mealService.createMeal(createData)
       }
       navigate('/meals')
@@ -99,15 +109,15 @@ const MealForm: React.FC = () => {
       <div className="mb-8">
         <button
           onClick={() => navigate('/meals')}
-          className="flex items-center text-gray-600 hover:text-gray-800 mb-4"
+          className="flex items-center text-gray-600 dark:text-gray-400 dark:text-gray-400 hover:text-gray-800 dark:text-gray-100 mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           返回列表
         </button>
-        <h1 className="text-2xl font-bold text-gray-800">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
           {isEditMode ? '编辑用餐记录' : '添加用餐记录'}
         </h1>
-        <p className="text-gray-600">记录你的美食时刻</p>
+        <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400">记录你的美食时刻</p>
       </div>
 
       {error && (
@@ -121,21 +131,21 @@ const MealForm: React.FC = () => {
           {/* 表单区域 */}
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 食物名称 *
               </label>
               <input
                 type="text"
                 value={foodName}
                 onChange={(e) => setFoodName(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 placeholder="例如：炸鸡、奶茶、沙拉"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 餐类 *
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -151,7 +161,7 @@ const MealForm: React.FC = () => {
                     className={`py-3 rounded-lg text-center font-medium transition ${
                       mealType === option.value
                         ? `${option.color} ring-2 ring-offset-2 ring-current`
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 dark:text-gray-400 hover:bg-gray-200'
                     }`}
                   >
                     {option.label}
@@ -161,23 +171,75 @@ const MealForm: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 用餐日期 *
               </label>
               <input
                 type="date"
                 value={mealDate}
                 onChange={(e) => setMealDate(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                营养信息（可选）
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">热量 (kcal)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={calories}
+                    onChange={(e) => setCalories(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    placeholder="例如：350"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">蛋白质 (g)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={proteinG}
+                    onChange={(e) => setProteinG(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    placeholder="例如：30"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">脂肪 (g)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={fatG}
+                    onChange={(e) => setFatG(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    placeholder="例如：10"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">碳水 (g)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={carbsG}
+                    onChange={(e) => setCarbsG(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                    placeholder="例如：45"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                 食物图片（可选）
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition">
+              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-blue-400 transition">
                 <input
                   type="file"
                   id="image-upload"
@@ -199,9 +261,9 @@ const MealForm: React.FC = () => {
                     </div>
                   ) : (
                     <div className="flex flex-col items-center">
-                      <Camera className="h-12 w-12 text-gray-400 mb-3" />
-                      <span className="text-gray-600">点击上传图片</span>
-                      <span className="text-sm text-gray-500 mt-1">支持 JPG, PNG, GIF 格式</span>
+                      <Camera className="h-12 w-12 text-gray-400 dark:text-gray-500 mb-3" />
+                      <span className="text-gray-600 dark:text-gray-400 dark:text-gray-400">点击上传图片</span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400 mt-1">支持 JPG, PNG, GIF 格式</span>
                     </div>
                   )}
                 </label>
@@ -211,9 +273,9 @@ const MealForm: React.FC = () => {
 
           {/* 预览区域 */}
           <div>
-            <div className="bg-gray-50 rounded-xl p-6 sticky top-6">
-              <h3 className="text-lg font-medium text-gray-800 mb-4">预览</h3>
-              <div className="bg-white rounded-lg p-6 shadow-sm">
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 sticky top-6">
+              <h3 className="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">预览</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center mb-4">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
                     mealType === '1' ? 'bg-yellow-100' :
@@ -229,10 +291,10 @@ const MealForm: React.FC = () => {
                     </span>
                   </div>
                   <div className="ml-4">
-                    <h4 className="font-bold text-gray-800">
+                    <h4 className="font-bold text-gray-800 dark:text-gray-100">
                       {foodName || '食物名称'}
                     </h4>
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">
                       {mealDate || '选择日期'} ·
                       {mealType === '1' ? '早餐' : mealType === '2' ? '午餐' : '晚餐'}
                     </p>
@@ -250,7 +312,7 @@ const MealForm: React.FC = () => {
                 )}
 
                 <div className="mt-6 pt-6 border-t">
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400 text-sm">
                     记录你的美食时刻，分享健康饮食生活
                   </p>
                 </div>
@@ -263,7 +325,7 @@ const MealForm: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/meals')}
-            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+            className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition"
           >
             取消
           </button>

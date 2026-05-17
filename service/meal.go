@@ -274,8 +274,9 @@ func (s *MealService) Delete(c *gin.Context, userid, id uint) error {
 }
 
 type DateRangeResult struct {
-	Records    []model.Meal          `json:"records"`
-	Statistics []model.FoodStatistic `json:"statistics"`
+	Records          []model.Meal             `json:"records"`
+	Statistics       []model.FoodStatistic    `json:"statistics"`
+	NutritionSummary *model.NutritionSummary  `json:"nutrition_summary"`
 }
 
 // ListByDateRange 获取指定日期范围内的用餐记录和食物统计数据
@@ -300,7 +301,12 @@ func (s *MealService) ListByDateRange(c *gin.Context, userid uint, startDate, en
 		return nil, err
 	}
 
-	result := &DateRangeResult{Records: records, Statistics: stats}
+	nutritionSummary, err := s.repo.NutritionByDateRange(userid, startDate, endDate)
+	if err != nil {
+		return nil, err
+	}
+
+	result := &DateRangeResult{Records: records, Statistics: stats, NutritionSummary: nutritionSummary}
 	jsonData, err := json.Marshal(result)
 	if err != nil {
 		return nil, err

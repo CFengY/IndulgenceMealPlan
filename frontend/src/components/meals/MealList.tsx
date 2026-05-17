@@ -51,7 +51,7 @@ const MealList: React.FC = () => {
       case '晚餐':
         return <Moon className="h-5 w-5 text-purple-500" />
       default:
-        return <Utensils className="h-5 w-5 text-gray-500" />
+        return <Utensils className="h-5 w-5 text-gray-500 dark:text-gray-400" />
     }
   }
 
@@ -64,7 +64,7 @@ const MealList: React.FC = () => {
       case '晚餐':
         return 'bg-purple-100 text-purple-800'
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100'
     }
   }
 
@@ -85,8 +85,8 @@ const MealList: React.FC = () => {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">我的用餐记录</h1>
-          <p className="text-gray-600">记录你的每一餐，享受美食生活</p>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">我的用餐记录</h1>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-400">记录你的每一餐，享受美食生活</p>
         </div>
         <Link
           to="/meals/new"
@@ -104,11 +104,11 @@ const MealList: React.FC = () => {
 
       {meals.length === 0 ? (
         <div className="text-center py-12">
-          <div className="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
-            <Utensils className="h-12 w-12 text-gray-400" />
+          <div className="w-24 h-24 mx-auto bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+            <Utensils className="h-12 w-12 text-gray-400 dark:text-gray-500" />
           </div>
-          <h3 className="text-xl font-medium text-gray-700 mb-2">还没有记录</h3>
-          <p className="text-gray-500 mb-6">开始记录你的第一餐吧！</p>
+          <h3 className="text-xl font-medium text-gray-700 dark:text-gray-200 mb-2">还没有记录</h3>
+          <p className="text-gray-500 dark:text-gray-400 mb-6">开始记录你的第一餐吧！</p>
           <Link
             to="/meals/new"
             className="inline-flex items-center bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition"
@@ -122,7 +122,7 @@ const MealList: React.FC = () => {
           {meals.map((meal) => (
             <div
               key={meal.ID}
-              className="bg-white border rounded-xl p-6 hover:shadow-md transition"
+              className="bg-white dark:bg-gray-800 border rounded-xl p-6 hover:shadow-md transition"
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between">
                 <div className="flex-1">
@@ -131,11 +131,18 @@ const MealList: React.FC = () => {
                     <span className={`ml-2 px-3 py-1 rounded-full text-sm font-medium ${getMealTypeColor(meal.meal_type)}`}>
                       {meal.meal_type}
                     </span>
-                    <span className="ml-4 text-gray-500 text-sm">
+                    <span className="ml-4 text-gray-500 dark:text-gray-400 text-sm">
                       {formatDate(meal.meal_date)}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{meal.food_name}</h3>
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+                    {meal.food_name}
+                    {meal.calories > 0 && (
+                      <span className="ml-3 text-sm font-normal text-orange-500">
+                        {meal.calories} kcal
+                      </span>
+                    )}
+                  </h3>
                   {meal.image_path && (
                     <div className="mt-4">
                       <img
