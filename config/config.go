@@ -7,14 +7,14 @@ import (
 )
 
 type Config struct {
-	Server ServerConfig `mapstructure:"server"`
-	MySQL  MySQLConfig  `mapstructure:"mysql"`
-	Jwt    JwtConfig    `mapstructure:"jwt"`
-	Upload UploadConfig `mapstructure:"upload"`
-	Redis  RedisConfig  `mapstructure:"redis"`
+	Server    ServerConfig    `mapstructure:"server"`
+	MySQL     MySQLConfig     `mapstructure:"mysql"`
+	Jwt       JwtConfig       `mapstructure:"jwt"`
+	Upload    UploadConfig    `mapstructure:"upload"`
+	Redis     RedisConfig     `mapstructure:"redis"`
 	Log       LogConfig       `mapstructure:"log"`
 	RateLimit RateLimitConfig `mapstructure:"rate_limit"`
-	AI        AIConfig         `mapstructure:"ai"`
+	AI        AIConfig        `mapstructure:"ai"`
 }
 
 type RedisConfig struct {
@@ -49,7 +49,7 @@ type UploadConfig struct {
 }
 
 func Load() (*Config, error) {
-	viper.SetConfigName("config")
+	viper.SetConfigName("config-myself")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("./config")
